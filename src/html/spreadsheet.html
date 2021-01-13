@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Interactive Data Editor</title>
+        <link rel="stylesheet" href='../css/spreadsheet.min.css'>
+        <link rel="stylesheet" href='../css/style.css'>
+        <script>
+            if (typeof module === 'object') { window.module = module; module = undefined; }
+        </script>
+        <script src="../lib/spreadsheet.min.js"></script>
+    </head>
+
+<body>
+    <div id="container">
+        <label id="fullS" style='margin: 10px 0 7px 0;'>Spreadsheet is loading, please wait...</label>
+        <input type="submit" value="Update Data" onclick="updateData();" style="float: right" id="btn">
+
+        <div id="range-div" style="display: none;">
+            <input type="range" name="" id="range" min=0 max=10000 step=1 value=0>
+            <span id="thumb"></span>
+        </div>
+
+    </div>
+    <div id="table"></div>
+    <script>
+        const { remote, ipcRenderer } = require('electron');
+        var full = document.getElementById("fullS");
+        var xcol = [], data = [], hot, columns = [], xName, mytable;
+        var event, th_in = 0
+
+        ipcRenderer.on("slider", function (e, d) {
+            var [t, _, _] = d;
+            xName = t;
+            xcol = d[1];
+            data = d[2].map(x => transpose(x));
+            if (data.length != 1) { // if data is 3d show the slider
+                full.innerHTML = `Drag the slider to change "${xName}" value:`
+                document.getElementById('range-div').style.display ='block'
+                document.getElementById('range-div').style.marginTop ='5px'
+                setUpSlider()
+            } else {
+                full.style.display = "none";
+            }
+            var height = window.innerHeight -
+                document.getElementById("container").offsetTop - 2 -
+                document.getElementById("table").offsetTop;
+
+            var wit = (window.innerWidth-450)/data[0][0].length
+            mytable = jexcel(document.getElementById('table'), {
+                        data:data[0],
+                        tableOverflow:true,
+                        defaultColWidth: wit>120?120:wit,
+                        lazyLoading: data[0].length>500, // for large data lazy loading
+                        columnDrag :true,
+                        rowDrag:true,
+                        csvFileName : 'data',
+                        csvDelimiter:'\t',
+                        tableWidth :window.innerWidth-100,
+                        allowRenameColumn : false,
+                        updateTable:function(_, cell, _, _, _, label, _) {cell.style.color = parseFloat(label)!=label ? 'red' : '#000000'},
+                        onload:_=>setTimeout(_=>{
+                            let tt = document.getElementsByClassName('jexcel_content')[0]
+                            tt.style.height = `${window.innerHeight-tt.offsetTop-10}px`
+                        },1), 
+                        onsort:_=>{data[th_in] = mytable.records.map(x=>x.map(y=>y.innerHTML))}//;btn.style.visibility = "visible"}
+                    })
+                    mytable.setData(data[0])
+            })
+
+
+        const slider = document.getElementById('range');
+        const thumb = document.getElementById('thumb');
+        function sliderChanged(){
+            let max = data.length-1;
+            let xPX = th_in * (document.body.clientWidth - thumb.offsetWidth) / max;
+            thumb.style.left = `${xPX}px`
+            thumb.innerText = `${xName}=${data[th_in][0][xcol]}`
+            mytable.setData(data[th_in])
+        }
+
+        function setUpSlider(){
+            slider.max = data.length - 1
+            // reset slider
+            slider.value = 0;
+            thumb.innerText = `${xName}=${data[0][0][xcol]}`
+            thumb.style.left = `${0}px`
+            slider.oninput = function(){
+                th_in = parseInt(slider.value);
+                sliderChanged()
+            }
+        }
+
+        function transpose(m) {
+            return m[0].map((_, i) => m.map(x => x[i]));
+        };
+
+        function updateData() { //parse the formulas during the return 
+            var dat = data.map(blocks=> blocks.map(line=>line.map(
+                elem=>(''+elem).substr(0,1)=='=' ? mytable.executeFormula(elem) :parseFloat(elem)
+            )))
+            ipcRenderer.send("back", dat)
+        }
+
+
+        window.onkeydown = function hotKeys(e) {
+            if (document.activeElement.type == "text") return
+            if(e.key=="," && th_in!=0){
+                th_in-=1
+                sliderChanged()
+            } else if(e.key=="." && th_in!=data.length-1){
+                th_in+=1
+                sliderChanged()
+            }
+        };
+    </script>
+</body>
+</html>

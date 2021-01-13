@@ -1,0 +1,290 @@
+
+*{
+    -webkit-user-select: none;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+    float: left;
+    width: 98.5%;
+    height: 98vh;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    flex-flow: column;
+}
+
+#toolbox{
+    position: absolute;
+    width: fit-content;
+    display: block;
+}
+#plotList{
+    width: 65%;
+    margin-left: 1pc;
+    margin-right: 1pc;
+}
+
+
+
+input[type=submit],button{
+    font-family: inherit;
+    font-size: 100%;
+    /* padding: .5em 1em; */
+    color: #444;
+    border: 1px solid #d5d5d5;
+    background-color: #f9f9f9;
+    text-decoration: none;
+    border-radius: 2px;
+    display: inline-block;
+    zoom: 1;
+    line-height: normal;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+
+
+select{
+    width: 3pc;
+    margin-right: 3px;
+    margin-left: 3px;
+    cursor: pointer; 
+    font-family: sans-serif;
+    font-size: 100%;
+    padding:3px;
+    color: #444;
+    border: 1px solid #d5d5d5;
+    background-color: #fff;
+    text-decoration: none;
+    border-radius: 2px;
+    display: inline-block;
+    zoom: 1;
+    line-height: normal;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+}
+
+input[type=text]{
+    /* padding: 0.3em 0.6em; */
+    height: 1.55pc;
+    display: inline-block;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: inset 0 0 1px #ddd;
+            box-shadow: inset 0 0 1px #ddd;
+    border-radius: 2px;
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    margin-right: 10px;
+    width: 7pc;
+    padding-left: 5px;
+}
+
+input[type=text]:focus {
+    outline: 0;
+    border-color: #129FEA;
+}
+
+
+
+input[type=submit]:hover,
+input[type=submit]:active,
+input[type=submit]:focus,
+button:hover,
+select:hover,
+select:focus,
+button:focus {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(40%, rgba(0,0,0, 0.05)), to(rgba(0,0,0, 0.10)));
+    background-image: -webkit-linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
+    background-image: linear-gradient(transparent, rgba(0,0,0, 0.05) 40%, rgba(0,0,0, 0.10));
+    outline: none;
+}
+
+
+select:active,
+button:active {
+        box-shadow: 0 0 4px rgba(0,0,0, 0.20) inset;
+}
+
+
+.scatterlayer .trace:first-of-type .points path {
+    pointer-events: all;
+}
+
+
+
+.borders {
+    padding: 2px 0 2px 0;
+    border: 1px solid black;
+    box-shadow: inset -2px -2px 3px 0px rgba(0,0,0,.15);
+    border-radius: 1px;
+    width: 100%;
+    background-color: white;
+}
+
+
+
+#drag {
+    margin: 5px 0 5px 0;
+}
+
+
+#plotlist{
+    padding: 1px;
+    width: 1.25pc;
+    padding-top: 3px;
+    border: none;
+    background: radial-gradient(#eee, transparent)
+}
+
+#plotlist:active, #plotlist:focus, #plotlist:hover{
+    background: radial-gradient(#eee, transparent) !important;
+    box-shadow: none;
+    outline: none;
+}
+
+
+.popup{
+    width : 'fit-content';
+    text-align: center;
+    width: fit-content;
+
+    height: fit-content;
+    position: absolute;
+    top: 200px;
+    left: 200px;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid black;
+    box-shadow: 8px 8px 6px -6px black;
+    transition: opacity 0.3s;
+    visibility: hidden; */
+    display: none;
+    background: white;
+}
+.title{
+    background-color: darkcyan;
+    border-radius: 5px 5px 0 0;
+    padding-left: 5px;
+    font-size: 21px;
+    border-bottom:  1px solid black;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    color: white;
+    cursor: move;
+}
+.titletxt{
+    cursor: move;
+}
+
+.closbtn{
+    float: right; 
+    padding-right: 10px;
+    color: white;
+    cursor: pointer;
+    padding-left: 25px;
+}
+.popmain{
+    padding: 21px 5px 10px 5px;
+    font-size: 17px;
+    text-align: center;
+}
+
+#popupPlotList{
+    width: 50%;
+}
+
+
+#fileFormat{
+    width: 5pc;
+    padding: 0;
+    margin : 5px 0px 5px 10px;
+}
+
+
+a{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+a:focus{
+    outline: none;
+}
+
+#polyInp{
+    width: 3pc;
+    text-align: center;
+}
+#formulaStr{
+    margin-left: 2pc
+}
+
+
+
+.heading{
+    font-size: 1.5pc;
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    margin-bottom: 15px;
+    border-bottom-style: double;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.copyBtn,.clsBtn, .clsBtnD{
+    border: none;
+    background: none;
+    text-align: right;
+    font: right;
+    padding-left: 2px;
+    padding-right: 2px;
+    height: 1.5pc;
+    width: 1.5pc
+}
+
+.clsBtnD{
+    opacity: .5;
+    cursor: auto;
+}
+.clsBtnD:hover{
+    background: none;
+}
+
+.clsBtn:hover{
+    background-color: rgb(233, 98, 98);
+}
+
+.copyBtn:hover{
+    background-color: rgb(179, 223, 252);
+}
+
+
+
+
+
+.container {
+    background: #ffffff ;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
+#figurecontainer{
+    flex: 1;
+}
+
+
+#branding{
+    position: fixed;
+    bottom: 0;
+    right:0;
+    text-shadow: #000000;
+    font-size: 1.05pc;
+}
